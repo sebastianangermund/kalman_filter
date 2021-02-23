@@ -6,7 +6,7 @@ from kalman_filter_system_params import KalmanFilter
 
 
 ## IMPORT 1 MINUTE GRANULAR BITCOIN DATA
-df = pd.read_csv("bitcoin.csv")
+df = pd.read_csv("../bitcoin/bitcoin.csv")
 df.timestamp_readable = [ts[:-3] for ts in df.timestamp_readable]	# Remove seconds from time format
 
 interval_duration = (df["timestamp"].iloc[-1] - df["timestamp"].iloc[0]) / 60 # minutes
@@ -23,7 +23,7 @@ number_of_steps = df.shape[0]
 #granularity = 60	# For analysing trends in timeranges ~ 10h
 #granularity = 120	# For analysing trends in timeranges > 20h (Bitcoin's variance is pretty narrow when zooming out more than ~24 h)
 
-for granularity in [(6, 18), (30, 16), (60, 12), (120, 0)]:
+for granularity in [(120, 0)]: #[(6, 18), (30, 16), (60, 12), (120, 0)]:
 	discrete_step = (interval_duration/number_of_steps) * (1/granularity[0])
 
 
@@ -66,11 +66,11 @@ for granularity in [(6, 18), (30, 16), (60, 12), (120, 0)]:
 	set_ticks = int(len(minute_array[start:end])/5)
 
 	# PLOT NICE FORMAT
-	fig, axes = plt.subplots(1, 1, figsize=(10,4))
+	fig, axes = plt.subplots(1, 1, figsize=(14,8))
 	axes.plot(minute_array[start:end], df["value"].tolist()[start:end], 'r')
 	axes.plot(minute_array[start:end], state_array[start:end], 'b')
 	axes.set_title(f'One minute resolution SEK/Bitcoin')
-	axes.legend(['Observed', 'Filtered'], loc='lower right')
+	axes.legend(['Observed', 'Filtered'], loc='lower left')
 	axes.grid(True)
 	axes.set_xticks(minute_array[start:end:set_ticks])
 	axes.set_xticklabels(df["timestamp_readable"].tolist()[start:end:set_ticks])
