@@ -6,7 +6,7 @@ from kalman_filter_system_params import KalmanFilter
 
 
 ## IMPORT 1 MINUTE GRANULAR BITCOIN DATA
-df = pd.read_csv("../bitcoin/bitcoin.csv")
+df = pd.read_csv("../data/bitcoin.csv")
 df.timestamp_readable = [ts[:-3] for ts in df.timestamp_readable]	# Remove seconds from time format
 
 interval_duration = (df["timestamp"].iloc[-1] - df["timestamp"].iloc[0]) / 60 # minutes
